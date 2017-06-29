@@ -103,9 +103,9 @@ class SliderController extends AdminBaseController
 
     }
 
-    private function returnView($view)
+    private function returnView($view,$data=null)
     {
-        return view($this->view_path.'.'.$view);
+        return view($this->view_path.'.'.$view,compact(isset($data)?'data':null));
     }
 
     public function resizeImage($request)
