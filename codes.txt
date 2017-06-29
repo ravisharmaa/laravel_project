@@ -1,0 +1,45 @@
+<input type=file id="sliderImage">
+        <img src={{}} id="imgPreview">
+
+
+
+
+@push('scripts')
+$(document).ready(function(){
+    $("#sliderImage").change(function () {
+        readURL(this);
+
+        });
+    }
+
+})
+
+   function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                console.log(e.target);
+                $('#imgPreview').attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+   }
+
+@endpush
+
+
+
+
+if ($request->hasFile('image')) {
+            $image   = $request->file('image');
+            $imgFile = $image->getClientOriginalName();
+            $imgFile = pathinfo($imgFile, PATHINFO_FILENAME);
+            $file    = Str::slug(Str::random(8) . $imgFile) . '.' . $image->getClientOriginalExtension();
+            $upload  = $image->move(base_path() . $this->imagePath, $file);
+            if ($upload) {
+                Image::make(base_path() . $this->imagePath . '/' . $file)->resize(Config::get('image.gallery_width'), Config::get('image.gallery_height'))->save($upload);
+            }
+        }
